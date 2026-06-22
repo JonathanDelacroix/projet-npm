@@ -9,14 +9,14 @@ const port = 3000;
 
 // Création du serveur HTTP
 const server = createServer((req, res) => {
-// Définition de la réponse à renvoyer au client
-res.statusCode = 200; // Code de statut HTTP (200 = OK)
-res.setHeader('Content-Type', 'text/plain'); // Type de contenu (texte brut)
-res.end('Hello World'); // Envoi de la réponse et fermeture de la connexion
+    // Définition de la réponse à renvoyer au client
+    res.statusCode = 200; // Code de statut HTTP (200 = OK)
+    res.setHeader('Content-Type', 'text/plain'); // Type de contenu (texte brut)
+    res.end('Hello World'); // Envoi de la réponse et fermeture de la connexion
 });
 
 // Demande au serveur d'écouter les connexions entrantes
 server.listen(port, hostname, () => {
-// Affichage du message de confirmation avec le lien d'accès
-console.log(`Server running at http://${hostname}:${port}/`);
+    // Affichage du message de confirmation avec le lien d'accès
+    console.log(`Server running at http://${hostname}:${port}/`);
 });
