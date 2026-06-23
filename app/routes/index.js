@@ -1,5 +1,5 @@
 import express from 'express';
-const router = express();
+const router = express.Router();
 
 import userRoutes from "./user.js";
 import woodRoutes from "./wood.js";

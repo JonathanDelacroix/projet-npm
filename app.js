@@ -3,10 +3,11 @@ import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import express from 'express';
 import router from "./app/routes/index.js";
 
+const app = express();
+
 // Ajout des routes avant « export default app; »
 app.use("/api", router);
 
-const app = express();
 const databaseUrl = new URL(process.env.DATABASE_URL);
 const adapter = new PrismaMariaDb({
     host: databaseUrl.hostname,
