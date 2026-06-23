@@ -5,6 +5,7 @@ import router from "./app/routes/index.js";
 
 const app = express();
 
+app.use(express.json());
 // Ajout des routes avant « export default app; »
 app.use("/api", router);
 
