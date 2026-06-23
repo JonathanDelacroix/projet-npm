@@ -16,8 +16,8 @@ CREATE TABLE `User` (
 CREATE TABLE `Wood` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
-    `type` ENUM('softwood', 'exotic_wood', 'noble_and_hardwoods') NOT NULL,
-    `hardness` ENUM('tender', 'medium_hard', 'hard') NOT NULL,
+    `type` ENUM('softwood', 'exotic wood', 'noble and hardwoods') NOT NULL,
+    `hardness` ENUM('tender', 'medium hard', 'hard') NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
