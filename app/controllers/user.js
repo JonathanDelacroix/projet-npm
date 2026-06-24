@@ -1,20 +1,27 @@
+import bcrypt from "bcrypt";
 import { prisma } from "../../app.js";
 
 export const signup = async (req, res) => {
     try {
-    const user = await prisma.user.create({
-        data: req.body,
-    });
+            const { password, ...userData } = req.body;
 
-    return res.status(201).json(user);
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            const user = await prisma.user.create({
+                data: {
+                    ...userData,
+                    password: hashedPassword,
+                },
+            });
+
+            return res.status(201).json(user);
 
     } catch (error) {
-    console.error(error);
+        console.error(error);
 
-    return res.status(500).json({
-        message: "Erreur lors de la création de l'utilisateur",
-        error: error.message ?? "Erreur inconnue",
-    });
+        return res.status(500).json({
+            error: error.message ?? "An error occured",
+        });
     }
 };
 
