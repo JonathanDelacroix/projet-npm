@@ -29,3 +29,35 @@ export const readByHardness = async (req, res) => {
     });
   }
 };
+
+export const create = async (req, res) => {
+  try {
+    let data;
+
+    // Cas 1 : form-data avec datas
+    if (req.body.datas) {
+      data = JSON.parse(req.body.datas);
+    }
+    // Cas 2 : JSON classique
+    else {
+      data = req.body;
+    }
+
+    // Ajout image optionnelle
+    if (req.file) {
+      data.image = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+    }
+
+    const newWood = await prisma.wood.create({
+      data,
+    });
+
+    res.status(201).json(newWood);
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Erreur création wood",
+      error: error.message,
+    });
+  }
+};

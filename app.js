@@ -20,6 +20,8 @@ prisma.$connect()
     .then(() => console.log("Database connected..."))
     .catch((err) => console.log(err));
 
+app.use('/uploads', express.static('uploads'));
+
 app.use(express.json());
 // Ajout des routes avant « export default app; »
 app.use("/api", router);

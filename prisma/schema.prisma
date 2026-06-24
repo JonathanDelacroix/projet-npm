@@ -41,4 +41,5 @@ model Wood {
   hardness  Hardness
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  image     String?
 }

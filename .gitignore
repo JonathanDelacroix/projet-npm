@@ -498,3 +498,5 @@ MigrationBackup/
 
 .env
 /generated/prisma
+
+/uploads
