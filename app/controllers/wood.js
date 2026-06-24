@@ -11,3 +11,21 @@ export const getAll = async (req, res) => {
     });
   }
 };
+
+export const readByHardness = async (req, res) => {
+  try {
+    const hardness = req.params.hardness;
+
+    const woods = await prisma.wood.findMany({
+      where: {
+        hardness: hardness,
+      },
+    });
+
+    return res.status(200).json(woods);
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message ?? "An error occured",
+    });
+  }
+};
