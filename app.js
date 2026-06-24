@@ -5,10 +5,6 @@ import router from "./app/routes/index.js";
 
 const app = express();
 
-app.use(express.json());
-// Ajout des routes avant « export default app; »
-app.use("/api", router);
-
 const databaseUrl = new URL(process.env.DATABASE_URL);
 const adapter = new PrismaMariaDb({
     host: databaseUrl.hostname,
@@ -23,5 +19,9 @@ export const prisma = new PrismaClient({ adapter });
 prisma.$connect()
     .then(() => console.log("Database connected..."))
     .catch((err) => console.log(err));
+
+app.use(express.json());
+// Ajout des routes avant « export default app; »
+app.use("/api", router);
 
 export default app;

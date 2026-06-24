@@ -1,6 +1,6 @@
 import { prisma } from "../../app.js";
 
-export const getAll = async (req, res) => {
+export const readAll = async (req, res) => {
   try {
     const wood = await prisma.wood.findMany();
 
