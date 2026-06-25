@@ -4,7 +4,15 @@ export const readAll = async (req, res) => {
   try {
     const wood = await prisma.wood.findMany();
 
-    return res.status(200).json(wood);
+    const woodsWithLinks = wood.map((wood) => ({
+      ...wood,
+      links: {
+        self: `${req.protocol}://${req.get("host")}/api/woods/${wood.id}`,
+        sameHardness: `${req.protocol}://${req.get("host")}/api/woods/hardness/${wood.hardness}`,
+      },
+    }));
+
+    return res.status(200).json(woodsWithLinks);
   } catch (error) {
     return res.status(500).json({
       error: error.message ?? "An error occured",
@@ -22,7 +30,15 @@ export const readByHardness = async (req, res) => {
       },
     });
 
-    return res.status(200).json(woods);
+    const woodsWithLinks = woods.map((wood) => ({
+      ...wood,
+      links: {
+        self: `${req.protocol}://${req.get("host")}/api/woods/${wood.id}`,
+        sameHardness: `${req.protocol}://${req.get("host")}/api/woods/hardness/${wood.hardness}`,
+      },
+    }));
+
+    return res.status(200).json(woodsWithLinks);
   } catch (error) {
     return res.status(500).json({
       error: error.message ?? "An error occured",
@@ -34,16 +50,12 @@ export const create = async (req, res) => {
   try {
     let data;
 
-    // Cas 1 : form-data avec datas
     if (req.body.datas) {
       data = JSON.parse(req.body.datas);
-    }
-    // Cas 2 : JSON classique
-    else {
+    } else {
       data = req.body;
     }
 
-    // Ajout image optionnelle
     if (req.file) {
       data.image = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
     }
@@ -52,10 +64,18 @@ export const create = async (req, res) => {
       data,
     });
 
-    res.status(201).json(newWood);
+    const woodWithLinks = {
+      ...newWood,
+      links: {
+        self: `${req.protocol}://${req.get("host")}/api/woods/${newWood.id}`,
+        sameHardness: `${req.protocol}://${req.get("host")}/api/woods/hardness/${newWood.hardness}`,
+      },
+    };
+
+    return res.status(201).json(woodWithLinks);
 
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       error: error.message ?? "An error occurred",
     });
   }
