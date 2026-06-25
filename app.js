@@ -2,6 +2,7 @@ import { PrismaClient } from "./generated/prisma/client";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import express from 'express';
 import router from "./app/routes/index.js";
+import cors from 'cors';
 
 const app = express();
 
@@ -19,6 +20,10 @@ export const prisma = new PrismaClient({ adapter });
 prisma.$connect()
     .then(() => console.log("Database connected..."))
     .catch((err) => console.log(err));
+
+app.use(cors({
+    origin: 'http://localhost:8080'
+}));
 
 app.use('/uploads', express.static('uploads'));
 
