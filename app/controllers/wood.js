@@ -30,7 +30,7 @@ export const readByHardness = async (req, res) => {
       },
     });
 
-    return res.status(200).json(wood.map((w) => woodLinks(req, w)));
+    return res.status(200).json(woods.map((w) => woodLinks(req, w)));
   } catch (error) {
     return res.status(500).json({
       error: error.message ?? "An error occured",
