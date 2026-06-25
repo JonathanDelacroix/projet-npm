@@ -76,6 +76,16 @@
             "example": "tender",
             "description": "Niveau de dureté standardisé du bois"
           },
+          "type": {
+            "type": "string",
+            "enum": [
+              "softwood",
+              "exotic_wood",
+              "noble_and_hardwoods"
+            ],
+            "example": "noble_and_hardwoods",
+            "description": "Type standardisé du bois"
+          },
           
           "image": {
             "type": "string",
@@ -104,34 +114,40 @@
           "updatedAt"
         ]
       },
-    "WoodWithHateoas": {
-    "allOf": [
-        {
-        "$ref": "#/components/schemas/Wood"
-        },
-        {
-        "type": "object",
-        "properties": {
-            "links": {
+      "WoodWithHateoas": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Wood"
+          },
+          {
             "type": "object",
             "properties": {
-                "self": {
-                "type": "string",
-                "example": "http://localhost:5000/api/woods/1"
+              "links": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/HateoasLink"
                 },
-                "sameHardness": {
-                "type": "string",
-                "example": "http://localhost:5000/api/woods/hardness/tender"
-                }
+                "description": "Liens hypertextes dynamiques de navigation HATEOAS",
+                "example": [
+                  {
+                    "rel": "self",
+                    "method": "GET",
+                    "href": "http://localhost:5000/api/woods/1"
+                  },
+                  {
+                    "rel": "sameHardness",
+                    "method": "GET",
+                    "href": "http://localhost:5000/api/woods/tender"
+                  }
+                ]
+              }
             },
-            "required": ["self", "sameHardness"],
-            "description": "Liens HATEOAS"
-            }
-        },
-        "required": ["links"]
-        }
-    ]
-    },
+            "required": [
+              "links"
+            ]
+          }
+        ]
+      },
       "ErrorResponse": {
         "type": "object",
         "properties": {
@@ -146,55 +162,55 @@
       }
     }
   },
-"paths": {
-  "/woods": {
-    "get": {
-      "summary": "Récupérer toutes les essences de bois",
-      "tags": [
-        "Woods"
-      ],
-      "parameters": [
-        {
-          "name": "Authorization",
-          "in": "header",
-          "required": true,
-          "description": "Jeton d'authentification JWT au format : Bearer <oken>",
-          "schema": {
-            "type": "string",
-            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "paths": {
+    "/woods": {
+      "get": {
+        "summary": "Récupérer toutes les essences de bois",
+        "tags": [
+          "Woods"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "Jeton d'authentification JWT au format : Bearer <oken>",
+            "schema": {
+              "type": "string",
+              "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+            }
           }
-        }
-      ],
-      "security": [
-        {
-          "BearerAuth": []
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "Collection de bois récupérée avec succès",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/WoodWithHateoas"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Collection de bois récupérée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WoodWithHateoas"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Accès refusé. Jeton JWT manquant, expiré ou corrompu dans l'en-tête Authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
           }
-        },
-        "401": {
-          "description": "Accès refusé. Jeton JWT manquant, expiré ou corrompu dans l'en-tête Authorization",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ErrorResponse"
-              }
-            }
-          }
         }
-      }
     },
     "post": {
       "summary": "Créer une essence de bois",
@@ -249,7 +265,7 @@
           }
         }
       }
+      }
     }
   }
-}
 }
